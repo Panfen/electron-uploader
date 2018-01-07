@@ -1,4 +1,5 @@
 ## 1. Introduce
+Desktop application for picture uploading and management.
 
 ## 2. electron-quick-start
 

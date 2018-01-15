@@ -5,10 +5,10 @@
     </el-row>
     <el-row class="content">
       <el-col :span="4" class="left">
-        <el-menu default-active="2" class="el-menu-vertical-demo"
-          background-color="#545c64"
+        <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#545c64"
           text-color="#fff"
-          active-text-color="#ffd04b">
+          active-text-color="#ffd04b"
+          @select="handleMenuSelect">
           <el-menu-item index="1">
             <i class="el-icon-upload"></i>
             <span slot="title">上传图片</span>
@@ -34,11 +34,9 @@
   import SystemInformation from './LandingPage/SystemInformation'
 
   export default {
-    name: 'landing-page',
-    components: { SystemInformation },
     methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
+      handleMenuSelect (key ,keypath) {
+        //
       }
     }
   }
@@ -68,16 +66,17 @@
     padding: 4px 10px;
   }
   #logo {
-    height: 20vh;
+    height: 14vh;
     width: auto;
   }
   .content{
     margin-top: 10px;
-    height: 70vh;
+    height: 78vh;
   }
   .left{
     height: 100%;
     background: #2c3e50;
+    border-right: solid 1px #e6e6e6;
   }
   .right{
     height: 100%;

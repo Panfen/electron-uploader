@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import LandingPage from '@/components/LandingPage'
+import Upload from '@/components/LandingPage/Upload'
+import Album from '@/components/LandingPage/Album'
+import Setting from '@/components/LandingPage/Setting'
 
 Vue.use(Router)
 
@@ -7,12 +11,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
-      component: require('@/components/LandingPage').default
+      redirect: '/landingpage/album'
     },
     {
-      path: '*',
-      redirect: '/'
+      path: '/landingpage',
+      component: LandingPage,
+      children: [
+        {
+          path: '/upload',
+          component: Upload
+        },{
+          path: '/album',
+          component: Album
+        },{
+          path: '/setting',
+          component: Setting
+        }
+      ]
     }
   ]
 })

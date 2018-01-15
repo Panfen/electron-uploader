@@ -35,8 +35,14 @@
 
   export default {
     methods: {
-      handleMenuSelect (key ,keypath) {
-        //
+      handleMenuSelect (key ,keyPath) {
+        if(keyPath[0] == '1'){
+          this.$router.push('/upload');
+        }else if(keyPath[0] == '2'){
+          this.$router.push('/album');
+        }else if(keyPath[0] == '3'){
+          this.$router.push('/setting');
+        }
       }
     }
   }

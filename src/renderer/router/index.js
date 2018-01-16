@@ -11,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/landingpage/album'
+      redirect: '/upload'
     },
     {
       path: '/landingpage',

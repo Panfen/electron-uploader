@@ -31,8 +31,6 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
-
   export default {
     methods: {
       handleMenuSelect (key ,keyPath) {

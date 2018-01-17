@@ -101,9 +101,8 @@
       submitQiniuForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            console.log(JSON.stringify(this.qiniuForm));
           } else {
-            console.log('error submit!!');
             return false;
           }
         });

@@ -3,7 +3,7 @@
 
   	<!-- 七牛云设置 -->
     <el-tab-pane label="七牛云" name="qiniu">
-    	<el-form :model="qiniuForm" status-icon :rules="qiniuRules" ref="qiniuForm" label-width="100px" class="demo-ruleForm">
+    	<el-form :model="qiniuForm" status-icon :rules="qiniuRules" ref="qiniuForm" label-width="100px" class="qiniu-form">
 			  <el-form-item label="AccessKey" prop="accesskey">
 			  	<el-col :span="12">
 			    	<el-input v-model.accesskey="qiniuForm.accesskey" size="medium"></el-input>
@@ -116,5 +116,7 @@
 </script>
 
 <style scoped>
-  
+  .qiniu-form{
+  	margin: 20px;
+  }
 </style>

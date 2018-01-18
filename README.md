@@ -1,6 +1,6 @@
 # ev-uploader
 
-> An electron-vue project
+> A desktop application for image uploading based on electron-vue 
 
 #### Build Setup
 

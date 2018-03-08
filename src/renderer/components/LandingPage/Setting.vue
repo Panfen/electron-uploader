@@ -1,34 +1,40 @@
 <template>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName" @tab-click="handleClick" class="setting-tabs">
 
   	<!-- 七牛云设置 -->
     <el-tab-pane label="七牛云" name="qiniu">
-    	<el-form :model="qiniuForm" status-icon :rules="qiniuRules" ref="qiniuForm" label-width="100px" class="qiniu-form">
-			  <el-form-item label="AccessKey" prop="accesskey">
-			  	<el-col :span="12">
-			    	<el-input v-model.accesskey="qiniuForm.accesskey" size="medium"></el-input>
-			    </el-col>
-			  </el-form-item>
-			  <el-form-item label="SecretKey" prop="secretkey">
-			  	<el-col :span="12">
-			    	<el-input v-model.secretkey="qiniuForm.secretkey" size="medium"></el-input>
-			    </el-col>
-			  </el-form-item>
-			  <el-form-item label="存储空间" prop="storespace">
-			  	<el-col :span="12">
-			    	<el-input v-model.storespace="qiniuForm.storespace" size="medium"></el-input>
-			    </el-col>
-			  </el-form-item>
-			  <el-form-item label="上传网址" prop="uploadurl">
-			  	<el-col :span="12">
-			    	<el-input v-model.uploadurl="qiniuForm.uploadurl" size="medium"></el-input>
-			    </el-col>
-			  </el-form-item>
-			  <el-form-item>	
-			    <el-button type="primary" size="medium" @click="submitQiniuForm('qiniuForm')">确定</el-button>
-			    <el-button size="medium" @click="resetQiniuForm('qiniuForm')">重置</el-button>
-			  </el-form-item>
-			</el-form>
+      <el-col :span="12" offset="6">
+      	<el-form :model="qiniuForm" status-icon :rules="qiniuRules" ref="qiniuForm" class="qiniu-form">
+  			  <el-form-item prop="accesskey">
+            <el-col :span="6" class="label">AccessKey</el-col>
+  			  	<el-col :span="18">
+  			    	<el-input v-model.accesskey="qiniuForm.accesskey" size="medium"></el-input>
+  			    </el-col>
+  			  </el-form-item>
+  			  <el-form-item prop="secretkey">
+            <el-col :span="6" class="label">SecretKey</el-col>
+  			  	<el-col :span="18">
+  			    	<el-input v-model.secretkey="qiniuForm.secretkey" size="medium"></el-input>
+  			    </el-col>
+  			  </el-form-item>
+  			  <el-form-item prop="storespace">
+            <el-col :span="6" class="label">存储空间</el-col>
+  			  	<el-col :span="18">
+  			    	<el-input v-model.storespace="qiniuForm.storespace" size="medium"></el-input>
+  			    </el-col>
+  			  </el-form-item>
+  			  <el-form-item prop="uploadurl">
+            <el-col :span="6" class="label">上传网址</el-col>
+  			  	<el-col :span="18">
+  			    	<el-input v-model.uploadurl="qiniuForm.uploadurl" size="medium"></el-input>
+  			    </el-col>
+  			  </el-form-item>
+  			  <el-form-item id="controll-box">	
+  			    <el-button type="primary" size="medium" @click="submitQiniuForm('qiniuForm')">确定</el-button>
+  			    <el-button size="medium" @click="resetQiniuForm('qiniuForm')">重置</el-button>
+  			  </el-form-item>
+  			</el-form>
+      </el-col>
     </el-tab-pane>
 
     <!-- 阿里云设置 -->
@@ -101,7 +107,22 @@
       submitQiniuForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log(JSON.stringify(this.qiniuForm));
+            this.$http('/qiniu', this.qiniuForm).then((res) => {
+              if(res.data.success){
+                this.$notify({
+                  title: '设置成功',
+                  message: '本次设置立即生效',
+                  type: 'success'
+                });
+              }else{
+                this.$notify({
+                  title: '设置失败',
+                  message: '检查信息是否正确',
+                  type: 'success'
+                });
+              }
+            })
+            console.log(JSON.stringify());
           } else {
             return false;
           }
@@ -115,7 +136,13 @@
 </script>
 
 <style scoped>
+  .setting-tabs{
+    margin-left: 10px;
+  }
   .qiniu-form{
-  	margin: 20px;
+  	margin: 40px auto;
+  }
+  #controll-box{
+    text-align: center;
   }
 </style>

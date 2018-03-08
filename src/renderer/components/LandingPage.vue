@@ -1,10 +1,11 @@
 <template>
   <div id="wrapper">
-    <el-row class="logo">
-      <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-    </el-row>
+    
     <el-row class="content">
       <el-col :span="4" class="left">
+        <el-row class="logo">
+          Evuploader
+        </el-row>
         <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b"
@@ -48,13 +49,11 @@
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-
   body { font-family: 'Avenir', Helvetica, Arial, sans-serif }
 
   #app{background: #F4F3F8;}
@@ -66,25 +65,29 @@
     position: relative;
   }
   .logo{
-    background: #FCFCFC;
-    padding: 4px 10px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    padding: 20px 0px;
   }
-  #logo {
-    height: 14vh;
-    width: auto;
-  }
+
   .content{
-    margin-top: 10px;
-    height: 78vh;
+    height: 100%;
   }
   .left{
     height: 100%;
+    min-width: 120px;
     background: #2c3e50;
-    border-right: solid 1px #e6e6e6;
+  }
+  .el-menu{
+    border-right: none;
+  }
+  .el-menu li.el-menu-item{
+    padding-left: 0;
+    text-align: center;
   }
   .right{
     height: 100%;
-    padding: 4px 10px;
     background: #fff;
   }
 </style>

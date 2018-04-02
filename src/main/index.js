@@ -1,8 +1,10 @@
-import { app, BrowserWindow } from 'electron'
+import {app, BrowserWindow, ipcMain} from 'electron'
+import db from '../datastore'
+import * as qiniu from 'qiniu-js'
 
 /**
  * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
+ * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.htmzxsl
  */
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
@@ -13,10 +15,13 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+//...........七牛上传..........
+ipcMain.on('uploadChoosedFiles', (evt, files) => {
+  console.log('files:'+ files);
+});
+
 function createWindow () {
-  /**
-   * Initial window options
-   */
+  //Initial window options
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,

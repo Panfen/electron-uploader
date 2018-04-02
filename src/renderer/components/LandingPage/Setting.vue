@@ -3,7 +3,7 @@
 
   	<!-- 七牛云设置 -->
     <el-tab-pane label="七牛云" name="qiniu">
-      <el-col :span="12" offset="6">
+      <el-col :span="12" :offset="6">
       	<el-form :model="qiniuForm" status-icon :rules="qiniuRules" ref="qiniuForm" class="qiniu-form">
   			  <el-form-item prop="accesskey">
             <el-col :span="6" class="label">AccessKey</el-col>
@@ -102,28 +102,24 @@
     },
     methods:{
     	handleClick(tab, event) {
-        console.log(tab, event);
+        // console.log(tab, event);
       },
       submitQiniuForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$http('/qiniu', this.qiniuForm).then((res) => {
-              if(res.data.success){
-                this.$notify({
-                  title: '设置成功',
-                  message: '本次设置立即生效',
-                  type: 'success'
-                });
-              }else{
-                this.$notify({
-                  title: '设置失败',
-                  message: '检查信息是否正确',
-                  type: 'success'
-                });
-              }
-            })
-            console.log(JSON.stringify());
-          } else {
+          if(valid){
+            this.$db.set('picBed.qiniu', this.qiniuForm).write();
+            this.$notify({
+              title: '提示',
+              message: '设置成功',
+              type: 'success',
+              duration: 1500
+            });
+          }else {
+            this.$notify.error({
+              title: '提示',
+              message: '设置失败，请检查填写字段',
+              duration: 1500
+            });
             return false;
           }
         });

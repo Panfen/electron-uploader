@@ -2,7 +2,7 @@
   <div id="wrapper">
     
     <el-row class="content">
-      <el-col :span="4" class="left">
+      <el-col :span="4" class="con-left">
         <el-row class="logo">
           Evuploader
         </el-row>
@@ -24,7 +24,7 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="20" class="right">
+      <el-col :span="20" class="con-right">
         <router-view></router-view>
       </el-col>
     </el-row>
@@ -74,7 +74,7 @@
   .content{
     height: 100%;
   }
-  .left{
+  .con-left{
     height: 100%;
     min-width: 120px;
     background: #2c3e50;
@@ -86,7 +86,7 @@
     padding-left: 0;
     text-align: center;
   }
-  .right{
+  .con-right{
     height: 100%;
     background: #fff;
   }

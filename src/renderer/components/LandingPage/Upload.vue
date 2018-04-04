@@ -5,7 +5,14 @@
         <i class="el-icon-upload"></i>
         <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
       </div>
-    </el-col> 
+    </el-col>
+    <el-progress 
+      :percentage="progress"
+      :show-text="false"
+      class="upload-progress"
+      :class="{'show': showProgress}"
+      :status="showError ? 'exception' : ''"
+    ></el-progress>
     <input type="file" id="file-uploader" @change="onFileChange" multiple>
   </el-row>
 </template>
@@ -14,8 +21,39 @@
   export default {
     data () {
       return {
-        
+        progress: 0,
+        showProgress: false,
+        showError: 0,
+        pasteStyle: ''
       }
+    },
+    mounted () {
+      this.$electron.ipcRenderer.on('uploadProgress', (event, progress) => {
+        if (progress !== -1) {
+          this.showProgress = true,
+          this.progress = progress
+        } else {
+          this.progress = 100,
+          this.showError = true
+        }
+      });
+      this.getPasteStyle();
+    },
+    watch: {
+      progress (val) {
+        if (val === 100) {
+          setTimeout(() => {
+            this.showProgress = false;
+            this.showError = false;
+          }, 1000);
+          setTimeout(() => {
+            this.progress = 0;
+          }, 1200);
+        }
+      }
+    },
+    beforeDestroy () {
+      this.$electron.ipcRenderer.removeAllListeners('uploadProgress');
     },
     methods: {
       openUplodWindow() {
@@ -34,6 +72,9 @@
           sendFiles.push(obj);
         });
         this.$electron.ipcRenderer.send('uploadChoosedFiles', sendFiles);
+      },
+      getPasteStyle () {
+        this.pasteStyle = this.$db.read().get('picBed.pasteStyle').value() || 'markdown';
       }
     }
   }

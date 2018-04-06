@@ -40,7 +40,7 @@ const qiniuUpload = async function (img, type, webContents) {
 		webContents.send('uploadProgress', 30);
 		const length = imgList.length;
 		for (let i in imgList) {
-			const options = postOptions(imgList[i].fileName, getToken, imgList[i].base64Image);
+			const options = postOptions(imgList[i].fileName, getToken(), imgList[i].base64Image);
 			const res = await request(options);
 			const body = JSON.parse(res);
 			if (body.key) {

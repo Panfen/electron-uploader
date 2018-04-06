@@ -17,10 +17,10 @@
   			    	<el-input v-model.secretkey="qiniuForm.secretkey" size="medium"></el-input>
   			    </el-col>
   			  </el-form-item>
-  			  <el-form-item prop="storespace">
+  			  <el-form-item prop="bucket">
             <el-col :span="6" class="label">存储空间</el-col>
   			  	<el-col :span="18">
-  			    	<el-input v-model.storespace="qiniuForm.storespace" size="medium"></el-input>
+  			    	<el-input v-model.bucket="qiniuForm.bucket" size="medium"></el-input>
   			    </el-col>
   			  </el-form-item>
   			  <el-form-item prop="uploadurl">
@@ -62,7 +62,7 @@
     			callback();
     		}
     	}
-    	var checkQiniuStoreSpace = (rule, value, callback) => {
+    	var checkQiniuBucket = (rule, value, callback) => {
     		if(!value){
     			return callback(new Error('存储空间不能为空'));
     		}else{
@@ -81,7 +81,7 @@
         qiniuForm: {
         	accesskey: '',
         	secretkey: '',
-        	storespace: '',
+        	bucket: '',
         	uploadurl: ''
         },
         qiniuRules: {
@@ -91,8 +91,8 @@
         	secretkey: [
         		{ validator: checkQiniuSecretKey, trigger: 'blur' }
         	],
-        	storespace: [
-        		{ validator: checkQiniuStoreSpace, trigger: 'blur' }
+        	bucket: [
+        		{ validator: checkQiniuBucket, trigger: 'blur' }
         	],
         	uploadurl:  [
         		{ validator: checkQiniuUploadUrl, trigger: 'blur' }

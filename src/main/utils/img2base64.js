@@ -38,7 +38,7 @@ const imgFromUploader = async (files) => {
 	await Promise.all(files.map(async item => {
 		let buffer = await fs.readFile(item.path);
 		let base64Image = Buffer.from(buffer, 'binary').toString('base64');
-		let fileName = item.name,
+		let fileName = item.name;
 		let imgSize = sizeOf(item.path);
 		results.push({
 			base64Image,

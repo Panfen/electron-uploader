@@ -21,10 +21,8 @@ const settingWinURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080/#landingpage/upload`
   : `file://${__dirname}/index.html#landingpage/upload`
 
-
-//...........七牛上传..........
 ipcMain.on('uploadChoosedFiles', (evt, files) => {
-  const imgs = await uploader(files, 'imgFromUploader', settingWindow.webContents);
+  const imgs = uploader(files, 'imgFromUploader', settingWindow.webContents);
   if (imgs) {
     const pasteStyle = db.read().get('picBed.pasteStyle').value() || 'markdown';
     let pasteText = '';
@@ -39,8 +37,7 @@ ipcMain.on('uploadChoosedFiles', (evt, files) => {
         notification.show();
       }, i * 100);
     }
-    clipboard.writeText(pasteText);
-    window.webContents.send('uploadFiles', imgs);
+    mainWindow.webContents.send('uploadFiles', imgs);
   } else {
     uploadFailed();
   }

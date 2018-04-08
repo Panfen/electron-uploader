@@ -12,7 +12,7 @@ function postOptions (fileName, token, imgBase64) {
 		url: `http://upload${area}.qiniu.com/putb64/-1/key/${base64FileName}`,
 		headers: {
 			Authorization: `UpToken ${token}`,
-			contentType: 'application/octet-stream'
+			contentType: 'application/json'
 		},
 		body: imgBase64
 	}
@@ -23,8 +23,8 @@ function selectArea (area) {
 }
 
 function getToken () {
-	const accessKey = db.read().get('picBed.qiniu.accessKey').value();
-	const secretKey = db.read().get('picBed.qiniu.secretKey').value();
+	const accessKey = db.read().get('picBed.qiniu.accesskey').value();
+	const secretKey = db.read().get('picBed.qiniu.secretkey').value();
 	const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 	const options = {
 		scope: db.read().get('picBed.qiniu.bucket').value()
@@ -41,12 +41,14 @@ const qiniuUpload = async function (img, type, webContents) {
 		const length = imgList.length;
 		for (let i in imgList) {
 			const options = postOptions(imgList[i].fileName, getToken(), imgList[i].base64Image);
-			const res = await request(options);
+			
+			const res = await request(options); //请求上传
+			
 			const body = JSON.parse(res);
 			if (body.key) {
 				delete imgList[i].base64Image;
-				const baseUrl = db.get('picBed.qiniu.url').value();
-				const options = db.get('picBed.qiniu.options').value();
+				const baseUrl = db.get('picBed.qiniu.uploadurl').value();
+				const options = db.get('picBed.qiniu.options').value() || '';
 				imgList[i]['imgUrl'] = `${baseUrl}/${body.key}${options}`;
 				imgList[i]['type'] = 'qiniu';
 				if (i - length === -1) {

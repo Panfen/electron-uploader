@@ -1,20 +1,19 @@
 <template>
-  <el-row class="wrapper">
-   	<el-col :span="12" class="uploader-border">
-      <div @click="openUplodWindow">
-        <i class="el-icon-upload"></i>
-        <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
-      </div>
-    </el-col>
-    <el-progress 
-      :percentage="progress"
-      :show-text="false"
-      class="upload-progress"
-      :class="{'show': showProgress}"
-      :status="showError ? 'exception' : ''"
-    ></el-progress>
-    <input type="file" id="file-uploader" @change="onFileChange" multiple>
+  <el-row class="wrapper upload-wrapper">
+    <el-row>
+     	<el-col class="uploader-border">
+        <div @click="openUplodWindow">
+          <i class="el-icon-upload"></i>
+          <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
+        </div>
+        <input type="file" id="file-uploader" @change="onFileChange" multiple>
+      </el-col>
+      <el-col>
+        <el-progress :percentage="50" class="up-progress"></el-progress>
+      </el-col>
+    </el-row>
   </el-row>
+  
 </template>
 
 <script>
@@ -29,6 +28,7 @@
     },
     mounted () {
       this.$electron.ipcRenderer.on('uploadProgress', (event, progress) => {
+        console.log('捕获数据')
         if (progress !== -1) {
           this.showProgress = true,
           this.progress = progress
@@ -83,16 +83,18 @@
 <style scoped>
   .wrapper{
   	height: 100%;
-  	display: flex;
-  	justify-content: center;
-  	align-items: center;
+  }
+  .upload-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .uploader-border{
     border: 1px dashed #666;
     border-radius: 4px;
     text-align: center;
     cursor: pointer;
-    padding: 50px 0 60px;
+    padding: 50px 40px 60px 40px;
   }
   .uploader-border:hover{
     border-color: #409eff;
@@ -111,5 +113,8 @@
   }
   #file-uploader{
     display: none;
+  }
+  .up-progress{
+    margin-top:12px; 
   }
 </style>

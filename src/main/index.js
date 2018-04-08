@@ -22,7 +22,7 @@ const settingWinURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html#landingpage/upload`
 
 ipcMain.on('uploadChoosedFiles', (evt, files) => {
-  const imgs = uploader(files, 'imgFromUploader', settingWindow.webContents);
+  const imgs = uploader(files, 'imgFromUploader', mainWindow.webContents);
   if (imgs) {
     const pasteStyle = db.read().get('picBed.pasteStyle').value() || 'markdown';
     let pasteText = '';
@@ -71,7 +71,7 @@ const createSettingWindow = () => {
   }
   settingWindow = new BrowserWindow(options);
 
-  settingWindow.loadURL(BrowserWindow);
+  settingWindow.loadURL(settingWinURL);
 
   settingWindow.on('closed', () => {
     settingWindow = null

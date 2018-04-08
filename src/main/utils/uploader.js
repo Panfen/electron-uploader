@@ -8,16 +8,16 @@ const checkUploader = (type) => {
 
 const uploader = (img, type, webContents) => {
 	const uploadType = db.read().get('picBed.current').value();
-	if (checkUploader(uploadType)) {
+	// if (checkUploader(uploadType)) {
 		switch (uploadType) {
 			case 'qiniu':
 				return qiniuUpload(img, type, webContents);
 			default:
 			  return false;
 		}
-	} else {
-		return false;
-	}
+	// } else {
+		// return false;
+	// }
 }
 
 export default uploader

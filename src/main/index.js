@@ -1,5 +1,5 @@
 import uploader from './utils/uploader.js'
-import {app, BrowserWindow, ipcMain} from 'electron'
+import {app, BrowserWindow, ipcMain, Notification, clipboard} from 'electron'
 import db from '../datastore'
 import pasteTemplate from './utils/pasteTemplate'
 
@@ -21,26 +21,36 @@ const settingWinURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080/#landingpage/upload`
   : `file://${__dirname}/index.html#landingpage/upload`
 
+const uploadFailed = () => {
+  const notification = new Notification({
+    title: '上传失败',
+    body: '前检查你的图床配置'
+  });
+}
+
 ipcMain.on('uploadChoosedFiles', (evt, files) => {
-  const imgs = uploader(files, 'imgFromUploader', mainWindow.webContents);
-  if (imgs) {
-    const pasteStyle = db.read().get('picBed.pasteStyle').value() || 'markdown';
-    let pasteText = '';
-    for (let i in imgs) {
-      pasteText += pasteTemplate(pasteStyle, img[i].imgUrl) + '\r\n';
-      const notification = new Notification({
-        title: '上传成功！',
-        body: imgs[i].imgUrl,
-        icon: files[i].path
-      });
-      setTimeout(() => {
-        notification.show();
-      }, i * 100);
+  uploader(files, 'imgFromUploader', mainWindow.webContents).then((imgs) => {
+    if(imgs !== 'error') {
+      const pasteStyle = db.read().get('picBed.pasteStyle').value() || 'URL';
+      let pasteText = '';
+      for (let i in imgs) {
+        pasteText += pasteTemplate(pasteStyle, imgs[i].imgUrl) + '\r\n';
+        const notification = new Notification({
+          title: '上传成功！',
+          body: imgs[i].imgUrl,
+          icon: files[i].path
+        });
+        setTimeout(() => {
+          notification.show();
+        }, i * 100);
+      }
+      clipboard.writeText(pasteText);
+      mainWindow.webContents.send('uploadFiles', imgs);
+    } else {
+      console.log('上传过程出现错误！');
+      uploadFailed();
     }
-    mainWindow.webContents.send('uploadFiles', imgs);
-  } else {
-    uploadFailed();
-  }
+  });
 });
 
 function createWindow () {

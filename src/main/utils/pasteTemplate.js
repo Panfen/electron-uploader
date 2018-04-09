@@ -1,9 +1,8 @@
 export default (style, url) => {
 	const tpl = {
-		'markdown': `![]($url)`,
+		'Markdown': `![]($url)`,
 		'HTML': `<img src="${url}">`,
-		'URL': url,
-		'UBB': `[IMG]${url}[/IMG]`
+		'URL': url
 	}
 	return tpl[style];
 }

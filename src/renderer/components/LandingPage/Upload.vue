@@ -1,15 +1,35 @@
 <template>
   <el-row class="wrapper upload-wrapper">
     <el-row>
-     	<el-col class="uploader-border">
+     	<el-col class="uploader-border" :span="14" :offset="5">
         <div @click="openUplodWindow">
           <i class="el-icon-upload"></i>
           <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
         </div>
         <input type="file" id="file-uploader" @change="onFileChange" multiple>
       </el-col>
-      <el-col>
-        <el-progress :percentage="50" class="up-progress"></el-progress>
+      <el-col :span="14" :offset="5">
+        <el-progress 
+          :percentage="progress" 
+          class="up-progress"
+          :show-text="false"
+          :class="{'show':showProgress}"
+          :status="showError ? 'exception' : ''"
+        ></el-progress>
+      </el-col>
+      <el-col class="link-wrap" :span="14" :offset="5">
+        <el-input placeholder="图片链接" v-model="urlLink" size="small">
+          <template slot="prepend">URL</template>
+          <el-button slot="append" icon="el-icon-document"></el-button>
+        </el-input>
+        <el-input placeholder="图片链接" v-model="htmlLink" size="small">
+          <template slot="prepend">HTML</template>
+          <el-button slot="append" icon="el-icon-document"></el-button>
+        </el-input>
+        <el-input placeholder="图片链接" v-model="markdownLink" size="small">
+          <template slot="prepend">Markdown</template>
+          <el-button slot="append" icon="el-icon-document"></el-button>
+        </el-input>
       </el-col>
     </el-row>
   </el-row>
@@ -22,13 +42,15 @@
       return {
         progress: 0,
         showProgress: false,
-        showError: 0,
-        pasteStyle: ''
+        showError: false,
+        pasteStyle: '',
+        urlLink: '',
+        htmlLink: '',
+        markdownLink: ''
       }
     },
     mounted () {
       this.$electron.ipcRenderer.on('uploadProgress', (event, progress) => {
-        console.log('捕获数据')
         if (progress !== -1) {
           this.showProgress = true,
           this.progress = progress
@@ -36,6 +58,9 @@
           this.progress = 100,
           this.showError = true
         }
+      });
+      this.$electron.ipcRenderer.on('uploadFiles', (event, imgs) => {
+        console.log(imgs[0])
       });
       this.getPasteStyle();
     },
@@ -49,6 +74,14 @@
           setTimeout(() => {
             this.progress = 0;
           }, 1200);
+          /*
+          this.$notify({
+            title: '提示',
+            message: '上传成功',
+            type: 'success',
+            duration: 1500
+          });
+          */
         }
       }
     },
@@ -115,6 +148,21 @@
     display: none;
   }
   .up-progress{
-    margin-top:12px; 
+    margin:10px 0;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+  }
+  .up-progress.show{
+    opacity: 1
+  }
+  .up-progress .el-progress-bar__inner{
+    transition: all .2s ease-in-out;
+  }
+  .link-wrap {
+    
+    font-size: 12px;
+  }
+  .el-input__inner{
+    height: 20px;
   }
 </style>

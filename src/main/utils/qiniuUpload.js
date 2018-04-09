@@ -41,9 +41,7 @@ const qiniuUpload = async function (img, type, webContents) {
 		const length = imgList.length;
 		for (let i in imgList) {
 			const options = postOptions(imgList[i].fileName, getToken(), imgList[i].base64Image);
-			
 			const res = await request(options); //请求上传
-			
 			const body = JSON.parse(res);
 			if (body.key) {
 				delete imgList[i].base64Image;
@@ -56,11 +54,7 @@ const qiniuUpload = async function (img, type, webContents) {
 				}
 			} else {
 				webContents.send('uploadProgress', -1);
-				const notification = new Notification({
-					title: '上传失败！',
-					body: res.body.msg
-				});
-				notification.show();
+				return 'error';
 			}
 		}
 		webContents.send('uploadProgress', 100);
@@ -68,11 +62,6 @@ const qiniuUpload = async function (img, type, webContents) {
 	} catch (err) {
 		webContents.send('uploadProgress', -1);
 		const error = JSON.parse(err.response.body);
-		const notification = new Notification({
-			title: '上传失败！',
-			body: error.error
-		});
-		notification.show();
 		throw new Error(err);
 	}
 }

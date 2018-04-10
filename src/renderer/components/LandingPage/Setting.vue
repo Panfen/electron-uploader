@@ -100,6 +100,14 @@
         }
       }
     },
+    created () {
+      const qiniuConfig = this.$db.get('picBed.qiniu').value();
+      if (qiniuConfig) {
+        for (let i in qiniuConfig) {
+          this.qiniuForm[i] = qiniuConfig[i];
+        }
+      }
+    },
     methods:{
     	handleClick(tab, event) {
         // console.log(tab, event);

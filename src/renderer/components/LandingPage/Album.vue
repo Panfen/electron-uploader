@@ -30,17 +30,19 @@
 		</el-row>
 
 		<!-- 弹出层 -->
-		<el-dialog title="图片查看" class="view-dialog" :visible.sync="viewPicDialogVisible" v-bind:showClose="false">
-			<p>仙女布偶</p>
-		  <img v-bind:src="currentUrl">
-		  <span slot="footer" class="dialog-footer">
-		    <el-button @click="viewPicDialogVisible=false">取 消</el-button>
-		    <el-button type="danger" @click="delePicAct">删 除</el-button>
-		  </span>
-		  <i class="el-icon-arrow-left prev" @click="prevPicAct"></i>
-			<i class="el-icon-arrow-right next" @click="nextPicAct"></i>
-		</el-dialog>
-		
+		<el-row class="pic-dialog" v-show="showPicDialog">  
+			<div class="dialog-wrapper">
+				<p class="title">图片查看</p>
+				<img v-bind:src="currentUrl">
+				<p class="name">布偶猫</p>
+				<span slot="footer" class="dialog-footer">
+			    <el-button type="danger" size="small" @click="delePicAct">删 除</el-button>
+			    <el-button size="small" @click="showPicDialog=false">取 消</el-button>
+			  </span>
+			  <i class="el-icon-arrow-left prev" @click="prevPicAct"></i>
+				<i class="el-icon-arrow-right next" @click="nextPicAct"></i>
+			</div>
+		</el-row>		
 	</el-row>
 </template>
 
@@ -48,7 +50,7 @@
 	export default {
 		data() {
 			return {
-				viewPicDialogVisible: false,
+				showPicDialog: false,
 				uploadPicDialogVisible: false,
 				picname: '',
 				currentIndex: 0,
@@ -77,7 +79,7 @@
       viewPicAct(index){
       	this.currentIndex = index;
       	this.currentUrl = this.urlList[index];
-      	this.viewPicDialogVisible = true;
+      	this.showPicDialog = true;
       },
       delePicAct(){
       	//
@@ -108,6 +110,66 @@
 </script>
 
 <style>
+	.wrapper{
+		position: relative;
+		height: 100%;
+	}
+	.pic-dialog{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 2018;
+		background: rgba(0,0,0,.3);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.pic-dialog .dialog-wrapper{
+		padding: 20px 40px;
+		background: #fff;
+		position: relative;
+		border-radius: 4px;
+	}
+	.pic-dialog .dialog-wrapper p.title{
+		color: #303133;
+		line-height: 32px;
+		font-weight: bold;
+		font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	}
+	.pic-dialog .dialog-wrapper p.name{
+		text-align: center;
+		font-size: 12px;
+		font-family: "\5FAE\8F6F\96C5\9ED1";
+	}
+	.pic-dialog .dialog-wrapper .dialog-footer{
+		display: block;
+		margin-top: 10px;
+	}
+	.pic-dialog .dialog-wrapper .dialog-footer .el-button{
+		float: right;
+		margin-left: 10px;
+	}
+	.pic-dialog .dialog-wrapper img{
+		padding: 6px 12px 0 12px;
+	}
+	.pic-dialog .dialog-wrapper i{
+		position: absolute;
+		top: 0;
+		width: 40px;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+	}
+	.pic-dialog .dialog-wrapper i.prev{
+		left: 0;
+	}
+	.pic-dialog .dialog-wrapper i.next{
+		right: 0;
+	}
 	.wrapper{
 		padding: 10px;
 		overflow: hidden;
@@ -147,32 +209,5 @@
 	}
 	.piclist ul li.pic-wrap .pic-checkbox .el-checkbox__label{
 		display: none;
-	}
-	.view-dialog .el-dialog__body{
-		position: relative;
-		text-align: center;
-	}
-	.view-dialog .el-dialog__body p{
-		margin-bottom: 6px;
-	}
-	.view-dialog .el-dialog__body i{
-		width: 60px;
-		height: 100%;
-		top:0;
-		display: block;
-		position: absolute;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		cursor: pointer;
-	}
-	.view-dialog .el-dialog__body i:hover{
-		transform: scale(1.2);
-	}
-	.view-dialog .el-dialog__body i.prev{
-		left: 10px;
-	}
-	.view-dialog .el-dialog__body i.next{
-		right: 10px;
 	}
 </style>

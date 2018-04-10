@@ -1,21 +1,22 @@
 # ev-uploader
 
-> A desktop application for image uploading based on electron-vue 
+> A desktop application for uploading and managing pictures based on `electron-vue`
 
-#### Build Setup
+## 1. Presentation
+![](http://ozlcirvd6.bkt.clouddn.com/eluploader.gif
+)
 
-``` bash
-# install dependencies
+## 2. Build Setup
+
+### . install dependencies
 npm install
 
-# serve with hot reload at localhost:9080
+### . serve with hot reload at localhost:9080
 npm run dev
 
-# build electron application for production
+### . build electron application for production
 npm run build
 
-
-```
 
 ---
 

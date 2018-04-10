@@ -44,7 +44,7 @@ ipcMain.on('uploadChoosedFiles', (evt, files) => {
           notification.show();
         }, i * 100);
       }
-      mainWindow.webContents.send('uploaderFiles', pasteText)
+      mainWindow.webContents.send('filesLinks', pasteText)
     } else {
       console.log('上传过程出现错误！');
       uploadFailed();

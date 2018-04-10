@@ -2,11 +2,18 @@
   <el-row class="wrapper upload-wrapper">
     <el-row>
      	<el-col class="uploader-border" :span="14" :offset="5">
-        <div @click="openUplodWindow">
-          <i class="el-icon-upload"></i>
-          <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
+        <div
+          :class="{'is-dragover': dragover}"
+          @drop.prevent="onDrop" 
+          @dragover.prevent="dragover = true" 
+          @dragleave.prevent="dragover = false"
+        >
+          <div @click="openUplodWindow">
+            <i class="el-icon-upload"></i>
+            <el-col class="tip">将文件拖至方框内，或 <span>点击上传</span></el-col>
+          </div>
+          <input type="file" id="file-uploader" @change="onFileChange" multiple>
         </div>
-        <input type="file" id="file-uploader" @change="onFileChange" multiple>
       </el-col>
       <el-col :span="14" :offset="5">
         <el-progress 
@@ -46,7 +53,8 @@
         pasteStyle: '',
         urlLink: '',
         htmlLink: '',
-        markdownLink: ''
+        markdownLink: '',
+        dragover: false
       }
     },
     mounted () {
@@ -59,8 +67,10 @@
           this.showError = true
         }
       });
-      this.$electron.ipcRenderer.on('uploaderFiles', (event, imgs) => {
-        console.log(imgs)
+      this.$electron.ipcRenderer.on('filesLinks', (event, links) => {
+        this.urlLink = links;
+        this.htmlLink = `<img src="${links}"/>`;
+        this.markdownLink = `![](${links})`;
       });
       this.getPasteStyle();
     },
@@ -74,14 +84,12 @@
           setTimeout(() => {
             this.progress = 0;
           }, 1200);
-          /*
           this.$notify({
             title: '提示',
             message: '上传成功',
             type: 'success',
             duration: 1500
           });
-          */
         }
       }
     },
@@ -89,6 +97,11 @@
       this.$electron.ipcRenderer.removeAllListeners('uploadProgress');
     },
     methods: {
+      onDrop(e){
+        this.dragover = false;
+        console.log(e.dataTransfer.files)
+        this.ipcSendFiles(e.dataTransfer.files);
+      },
       openUplodWindow() {
         document.getElementById('file-uploader').click();
       },
@@ -127,10 +140,13 @@
     border-radius: 4px;
     text-align: center;
     cursor: pointer;
+    transition: all ease 0.3s;
     padding: 50px 40px 60px 40px;
   }
+  .uploader-border.is-dragover,
   .uploader-border:hover{
     border-color: #409eff;
+    background-color: rgba(164, 216, 250, 0.1);
   }
   .uploader-border i{
     font-size: 40px;

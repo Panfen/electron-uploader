@@ -27,15 +27,30 @@
       <el-col class="link-wrap" :span="14" :offset="5">
         <el-input placeholder="图片链接" v-model="urlLink" size="small">
           <template slot="prepend">URL</template>
-          <el-button slot="append" icon="el-icon-document"></el-button>
+          <el-button 
+            slot="append" 
+            icon="el-icon-document" 
+            v-clipboard:copy="urlLink"
+            v-clipboard:success="onCopy"
+          ></el-button>
         </el-input>
         <el-input placeholder="图片链接" v-model="htmlLink" size="small">
           <template slot="prepend">HTML</template>
-          <el-button slot="append" icon="el-icon-document"></el-button>
+          <el-button 
+            slot="append" 
+            icon="el-icon-document" 
+            v-clipboard:copy="htmlLink"
+            v-clipboard:success="onCopy"
+          ></el-button>
         </el-input>
         <el-input placeholder="图片链接" v-model="markdownLink" size="small">
           <template slot="prepend">Markdown</template>
-          <el-button slot="append" icon="el-icon-document"></el-button>
+          <el-button 
+            slot="append" 
+            icon="el-icon-document" 
+            v-clipboard:copy="markdownLink"
+            v-clipboard:success="onCopy"
+          ></el-button>
         </el-input>
       </el-col>
     </el-row>
@@ -121,6 +136,14 @@
       },
       getPasteStyle () {
         this.pasteStyle = this.$db.read().get('picBed.pasteStyle').value() || 'markdown';
+      },
+      onCopy () {
+        this.$notify({
+          title: '提示',
+          message: '已复制到粘贴板',
+          type: 'success',
+          duration: 1500
+        });
       }
     }
   }

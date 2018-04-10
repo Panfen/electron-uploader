@@ -66,6 +66,7 @@
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
     "vue": "^2.5.16",
+    "vue-clipboard2": "^0.1.0",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1"

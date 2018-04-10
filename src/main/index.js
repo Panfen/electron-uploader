@@ -1,5 +1,5 @@
 import uploader from './utils/uploader.js'
-import {app, BrowserWindow, ipcMain, Notification, clipboard} from 'electron'
+import {app, BrowserWindow, ipcMain, Notification} from 'electron'
 import db from '../datastore'
 import pasteTemplate from './utils/pasteTemplate'
 
@@ -34,7 +34,7 @@ ipcMain.on('uploadChoosedFiles', (evt, files) => {
       const pasteStyle = db.read().get('picBed.pasteStyle').value() || 'URL';
       let pasteText = '';
       for (let i in imgs) {
-        pasteText += pasteTemplate(pasteStyle, imgs[i].imgUrl) + '\r\n';
+        pasteText += pasteTemplate(pasteStyle, 'http://' + imgs[i].imgUrl) + '\r\n';
         const notification = new Notification({
           title: '上传成功！',
           body: imgs[i].imgUrl,
@@ -44,8 +44,7 @@ ipcMain.on('uploadChoosedFiles', (evt, files) => {
           notification.show();
         }, i * 100);
       }
-      clipboard.writeText(pasteText);
-      mainWindow.webContents.send('uploadFiles', imgs);
+      mainWindow.webContents.send('uploaderFiles', pasteText)
     } else {
       console.log('上传过程出现错误！');
       uploadFailed();

@@ -59,8 +59,8 @@
           this.showError = true
         }
       });
-      this.$electron.ipcRenderer.on('uploadFiles', (event, imgs) => {
-        console.log(imgs[0])
+      this.$electron.ipcRenderer.on('uploaderFiles', (event, imgs) => {
+        console.log(imgs)
       });
       this.getPasteStyle();
     },
